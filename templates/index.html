@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Validator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Get in touch</h2>
+                        <form id="validator-form" action="/submit" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="old-log">Upload Old Log</label>
+                                <input type="file" class="form-control" id="old-log" name="old_log" accept=".txt" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-log">Upload New Log</label>
+                                <input type="file" class="form-control" id="new-log" name="new_log" accept=".txt" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="comparison">Comparison</label>
+                                <select class="form-control" id="comparison" name="comparison" required>
+                                    <option value="">Select an option</option>
+                                    <option value="sample1">Sample 1</option>
+                                    <option value="sample2">Sample 2</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="loading" class="mt-4 text-center" style="display: none;">
+                    <div class="loading-text">Validation in Progress</div>
+                </div>
+                <div id="thank-you" class="mt-4 text-center" style="display: none;">
+                    <div class="thank-you-card">
+                        <h2>Thank You.</h2>
+                        <p>We'll be in touch shortly!</p>
+                        <a id="download-url" href="#" class="btn btn-success">Download Comparison Report</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('validator-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            document.getElementById('loading').style.display = 'block';
+
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                if (data.success) {
+                    document.getElementById('thank-you').style.display = 'block';
+                    document.getElementById('download-url').href = data.download_url;
+                } else {
+                    alert('There was an error processing your request.');
+                }
+            }).catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                alert('There was an error processing your request.');
+            });
+        });
+    </script>
+</body>
+</html>

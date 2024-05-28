@@ -1,0 +1,74 @@
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.container {
+    margin-top: 5%;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    border-radius: 0;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 50px;
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    color: #007bff;
+    animation: blink 1s steps(5, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+.thank-you-card {
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thank-you-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.thank-you-card p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-success {
+    border-radius: 50px;
+    background-color: #28a745;
+    border-color: #28a745;
+}
