@@ -8,40 +8,65 @@
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="card mt-5">
                     <div class="card-body">
-                        <h2 class="text-center mb-4">Get in touch</h2>
-                        <form id="validator-form" action="/submit" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="old-log">Upload Old Log</label>
-                                <input type="file" class="form-control" id="old-log" name="old_log" accept=".txt" required>
+                        <h2 class="text-center mb-4">APGL VALIDATOR</h2>
+                        <form id="validator-form" action="/submit" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="old-log">Upload Old Log</label>
+                                    <input type="file" class="form-control" id="old-log" name="old_log" accept=".log" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="new-log">Upload New Log</label>
+                                    <input type="file" class="form-control" id="new-log" name="new_log" accept=".log" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="gvExchange">Exchange</label>
+                                    <input type="text" class="form-control" id="gvExchange" name="gvExchange" placeholder="Enter Exchange" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="gvmarket">Market</label>
+                                    <input type="text" class="form-control" id="gvmarket" name="gvmarket" placeholder="Enter Market" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="gvmemocontent">Memo</label>
+                                    <input type="text" class="form-control" id="gvmemocontent" name="gvmemocontent" placeholder="Enter Memo" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="gvExceptionList">Exception List</label>
+                                    <input type="text" class="form-control" id="gvExceptionList" name="gvExceptionList" placeholder="Enter Exception list" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="comparison_options">Comparison Options</label>
+                                    <select class="form-control" id="comparison_options" name="comparison_options" required>
+                                        <option value="">Select an option</option>
+                                        <option value="1">P10P3recv</option>
+                                        <option value="2">P10APSend</option>
+                                        <option value="3">P10P3Send</option>
+                                        <option value="4">P10APrecv</option>
+                                        <option value="5">All files base vs Cand</option>
+                                        <option value="6">All Files Cand vs base</option>
+                                        <option value="8">GLv5 Exp Vs Actual Base+Candidate</option>
+                                        <option value="9">GLv5 Exp Vs Actual Base</option>
+                                        <option value="10">GLv5 Exp Vs Actual Candidate</option>
+                                        <option value="11">GES Vs Non GES</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="new-log">Upload New Log</label>
-                                <input type="file" class="form-control" id="new-log" name="new_log" accept=".txt" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="comparison">Comparison</label>
-                                <select class="form-control" id="comparison" name="comparison" required>
-                                    <option value="">Select an option</option>
-                                    <option value="sample1">Sample 1</option>
-                                    <option value="sample2">Sample 2</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
                         </form>
                     </div>
                 </div>
                 <div id="loading" class="mt-4 text-center" style="display: none;">
                     <div class="loading-text">Validation in Progress</div>
                 </div>
-                <div id="thank-you" class="mt-4 text-center" style="display: none;">
-                    <div class="thank-you-card">
-                        <h2>Thank You.</h2>
-                        <p>We'll be in touch shortly!</p>
+                <div id="report-generated" class="mt-4 text-center" style="display: none;">
+                    <div class="report-generated-card">
+                        <h3>Reports Generated</h3>
                         <a id="download-url" href="#" class="btn btn-success">Download Comparison Report</a>
                     </div>
                 </div>
@@ -62,7 +87,7 @@
             .then(data => {
                 document.getElementById('loading').style.display = 'none';
                 if (data.success) {
-                    document.getElementById('thank-you').style.display = 'block';
+                    document.getElementById('report-generated').style.display = 'block';
                     document.getElementById('download-url').href = data.download_url;
                 } else {
                     alert('There was an error processing your request.');
@@ -71,6 +96,11 @@
                 document.getElementById('loading').style.display = 'none';
                 alert('There was an error processing your request.');
             });
+        });
+
+        document.getElementById('download-url').addEventListener('click', function() {
+            document.getElementById('validator-form').reset();
+            document.getElementById('report-generated').style.display = 'none';
         });
     </script>
 </body>

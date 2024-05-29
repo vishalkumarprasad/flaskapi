@@ -1,29 +1,18 @@
+import io
+import zipfile
+
 from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify
 import os
 import time
 from werkzeug.utils import secure_filename
+from validator.main import wrapper_validator
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['UPLOAD_FOLDER'] = 'validator/conf'
+app.config['DOWNLOAD_FOLDER'] = 'validator/report'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-
-def compare_logs(old_log_path, new_log_path):
-    with open(old_log_path, 'r') as f1, open(new_log_path, 'r') as f2:
-        old_log_lines = f1.readlines()
-        new_log_lines = f2.readlines()
-
-    report_lines = []
-    for line in old_log_lines:
-        if line not in new_log_lines:
-            report_lines.append(f"- {line}")
-
-    for line in new_log_lines:
-        if line not in old_log_lines:
-            report_lines.append(f"+ {line}")
-
-    return report_lines
 
 
 @app.route('/')
@@ -38,7 +27,11 @@ def submit_form():
 
     old_log = request.files['old_log']
     new_log = request.files['new_log']
-    comparison = request.form['comparison']
+    comparison_options = request.form['comparison_options']
+    gv_exchange = request.form.get('gvExchange')
+    gv_market = request.form.get('gvmarket')
+    gv_memo_content = request.form.get('gvmemocontent')
+    gv_exception_list = request.form.get('gvExceptionList')
 
     if old_log.filename == '' or new_log.filename == '':
         return jsonify(success=False, message='No selected file')
@@ -54,16 +47,18 @@ def submit_form():
     time.sleep(2)
 
     # Compare the logs and generate the report
-    report_lines = compare_logs(old_log_path, new_log_path)
-    report_path = os.path.join(app.config['UPLOAD_FOLDER'], 'comparison_report.txt')
-    with open(report_path, 'w') as report_file:
-        report_file.writelines(report_lines)
+    wrapper_validator(vftype=comparison_options,
+                      gvP10_file1=old_log_filename,
+                      gvP10_file2=new_log_filename,
+                      gvExchange=gv_exchange,
+                      gvmarket=gv_market,
+                      gvmemocontent=gv_memo_content,
+                      gvExceptionList=gv_exception_list)
 
 
-    return_file = wrapper_validator(vftype, mkdfk, dfm, sdmf, dfm, dsfm)
 
     # Prepare the download URL
-    download_url = url_for('download_report', filename='comparison_report.txt')
+    download_url = url_for('download_reports')
 
     # Delete the input files
     os.remove(old_log_path)
@@ -72,16 +67,23 @@ def submit_form():
     return jsonify(success=True, download_url=download_url)
 
 
-@app.route('/download/<filename>')
-def download_report(filename):
-    report_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    response = send_file(report_path, as_attachment=True, download_name=filename, mimetype='text/plain')
+@app.route('/download')
+def download_reports():
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer,'w', zipfile.ZIP_DEFLATED) as zip_files:
+        for filename in os.listdir(app.config['DOWNLOAD_FOLDER']):
+            file_path = os.path.join(app.config['DOWNLOAD_FOLDER'], filename)
+            zip_files.write(file_path,filename)
 
+    zip_buffer.seek(0)
     # Delete the report after sending
-    os.remove(report_path)
+    for filename in os.listdir(app.config['DOWNLOAD_FOLDER']):
+        file_path = os.path.join(app.config['DOWNLOAD_FOLDER'], filename)
+        os.remove(file_path)
 
-    return response
+    # Send zip file as a download
+    return send_file(zip_buffer, as_attachment=True, download_name='All_reports.zip', mimetype= 'appliaction/zip')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=4000, debug=True)

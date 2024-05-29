@@ -1,15 +1,16 @@
 body {
-    background-color: #f8f9fa;
-    color: #212529;
+    background-color: #e0f7fa;  /* Light blue pastel background */
+    color: #004d66;  /* Dark blue pastel text */
 }
 
-.container {
-    margin-top: 5%;
+.container-fluid {
+    margin-top: 8%;
 }
 
 .card {
     border: none;
     border-radius: 10px;
+    background-color: #ffffff;  /* White card background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -21,54 +22,36 @@ h2 {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
+    color: #004d66;  /* Dark blue pastel text */
 }
 
 .form-control {
     border-radius: 0;
-    background-color: #e9ecef;
-    border: 1px solid #ced4da;
-    color: #495057;
+    background-color: #e0f7fa;  /* Light blue pastel input background */
+    border: 1px solid #b2ebf2;  /* Light blue pastel border */
+    color: #004d66;  /* Dark blue pastel text */
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #00796b;  /* Dark blue pastel button */
+    border-color: #00796b;
     border-radius: 50px;
 }
 
 .loading-text {
     font-size: 1.5rem;
-    color: #007bff;
-    animation: blink 1s steps(5, start) infinite;
+    color: #004d66;  /* Dark blue pastel text */
 }
 
-@keyframes blink {
-    to {
-        visibility: hidden;
-    }
-}
-
-.thank-you-card {
-    background-color: #007bff;
-    color: #ffffff;
+.report-generated-card {
+    border: none;
     border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.thank-you-card h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.thank-you-card p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
+    background-color: #00796b;  /* Dark blue pastel card background */
+    padding: 20px;
+    color: #ffffff;  /* White text */
 }
 
 .btn-success {
-    border-radius: 50px;
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: #004d66;  /* Dark blue pastel button */
+    border-color: #004d66;
 }
