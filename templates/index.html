@@ -6,6 +6,23 @@
     <title>Log Validator</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        /* Add CSS for spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #004d66; /* Dark blue pastel text */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -63,9 +80,12 @@
                         </form>
                     </div>
                 </div>
+                <!-- Loading animation section -->
                 <div id="loading" class="mt-4 text-center" style="display: none;">
-                    <div class="loading-text">Validation in Progress</div>
+                    <div class="spinner"></div> <!-- Add spinner -->
+                    <div class="loading-text mt-2">Validation in Progress...</div>
                 </div>
+                <!-- Report generated section -->
                 <div id="report-generated" class="mt-4 text-center" style="display: none;">
                     <div class="report-generated-card">
                         <h3>Reports Generated</h3>
