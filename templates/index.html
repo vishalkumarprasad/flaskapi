@@ -16,31 +16,33 @@
                         <h2 class="text-center mb-4">APGL VALIDATOR</h2>
                         <form id="validator-form" action="/submit" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <div class="form-row">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label for="old-log">Upload Old Log</label>
                                     <input type="file" class="form-control" id="old-log" name="old_log" accept=".log" required>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label for="new-log">Upload New Log</label>
                                     <input type="file" class="form-control" id="new-log" name="new_log" accept=".log" required>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-4">
                                     <label for="gvExchange">Exchange</label>
                                     <input type="text" class="form-control" id="gvExchange" name="gvExchange" placeholder="Enter Exchange" required>
                                 </div>
-                                <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
                                     <label for="gvmarket">Market</label>
                                     <input type="text" class="form-control" id="gvmarket" name="gvmarket" placeholder="Enter Market" required>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label for="gvmemocontent">Memo</label>
                                     <input type="text" class="form-control" id="gvmemocontent" name="gvmemocontent" placeholder="Enter Memo" required>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label for="gvExceptionList">Exception List</label>
                                     <input type="text" class="form-control" id="gvExceptionList" name="gvExceptionList" placeholder="Enter Exception list" required>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label for="comparison_options">Comparison Options</label>
                                     <select class="form-control" id="comparison_options" name="comparison_options" required>
                                         <option value="">Select an option</option>
